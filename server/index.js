@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 3002;
 
 app.use('/graphql', graphqlHTTP({
     schema,
-    graphql: true
+    graphiql: true
 }));
 
 app.listen(PORT, () => console.log(`Express server running on port: ${PORT}`));
