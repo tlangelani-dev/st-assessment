@@ -1,4 +1,3 @@
-import React from 'react';
 import {
     ApolloClient,
     ApolloProvider,
@@ -7,12 +6,16 @@ import {
     from
 } from '@apollo/client';
 import { ErrorLink, onError } from '@apollo/client/link/error';
-import People from './components/People';
+import People from './People';
+import { Container } from './Container.style';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import HomePage from '../pages/Home';
+import PersonDetailsPage from '../pages/PersonDetails';
 
 const errorLink = onError(({ graphQLErrors, networkError}) => {
     if (graphQLErrors) {
         graphQLErrors.map(({ message, locations, path }) => {
-            alert(`Grapgql error ${message}`);
+            alert(`Graphql error ${message}`);
         });
     }
 })
@@ -28,9 +31,12 @@ const client = new ApolloClient({
 const App = () => {
     return (
         <ApolloProvider client={client}>
-            <div className='app'>
-                <People />
-            </div>
+            <Router>
+                <Switch>
+                    <Route exact path="/" component={HomePage} />
+                    <Route path="/person-details/:name" component={PersonDetailsPage} />
+                </Switch>
+            </Router>
         </ApolloProvider>
     )
 }

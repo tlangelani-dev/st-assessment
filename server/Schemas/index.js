@@ -2,7 +2,8 @@ const {
     GraphQLObjectType,
     GraphQLString,
     GraphQLList,
-    GraphQLSchema
+    GraphQLSchema,
+    GraphQLInt
 } = require('graphql');
 const axios = require('axios');
 
@@ -13,8 +14,14 @@ const RootQuery = new GraphQLObjectType({
     fields: {
         people: {
             type: new GraphQLList(PeopleType),
+            args: {
+                page: {
+                    type: GraphQLInt,
+                    defaultValue: 1
+                }
+            },
             resolve(parent, args) {
-                return axios.get('https://swapi.dev/api/people').then(res => res.data.results);
+                return axios.get(`https://swapi.dev/api/people?page=${args.page}`).then(res => res.data.results);
             }
         },
         person: {
